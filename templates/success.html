@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+  .hero3{
+    padding:20px 15%;
+  }
+  .log3 h1{
+    color:#ccc;
+  }
+  .log3 p{
+    color:#fff;
+    margin:10px 0 10px 0;
+  }
+  .log3 a{
+    color:#fd004d;
+  }
+  @media(max-width:1270px){
+    .hero3{
+      padding:20px 2%;
+    }
+  }
+</style>
+  <div class="hero3">
+    <div class="reg2">
+        <div class="log3">
+          <h1>Welcome,<span>{{new_model|capfirst}}</span></h1>
+          <hr>
+          <p>Your Accout Has Been Created Successfully.
+           <a href="{% url 'login' %}">Log In </a>
+          </p>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+

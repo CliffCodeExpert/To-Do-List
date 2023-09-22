@@ -1,0 +1,125 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://kit.fontawesome.com/9e25729fe1.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <title>To Do List</title>
+  <style>
+
+    /** alert button **/
+    .alert{
+      padding:20px;
+      background-color:green;
+      color:white;	
+      width:50%;
+      margin:10px 0 10px 0;
+      border-radius: 30px;
+    }
+    .closebtn{
+      margin-left: 15px;
+      color:white;
+      font-weight: bold;
+      float: right;
+      font-size: 22px;
+      line-height: 20px;
+      cursor:pointer;
+      transition: 0.3s;
+    }
+    .closebtn:hover{
+      color:black;
+    }
+    @media(max-width:1270px){
+      .alert{
+        width:100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!--Start Header -->
+  <!-- Main container for the header and content -->
+<div class="container">
+  <!-- Header section containing logo and authentication-related links -->
+  <header class="menu">
+    <!-- Check if a user is currently authenticated -->
+    {% if request.user.is_authenticated %}
+      <!-- If authenticated, display a greeting with the user's username -->
+      <h1 class="logo">Hello <span>{{request.user.username|capfirst}}</span></h1>
+
+      <!-- Link to log out the authenticated user -->
+      <a href="{% url 'logout' %}">Log Out</a>
+    {% else %}
+
+      <!-- If not authenticated, display the main site title -->
+      <h1 class="logo">To Do List</h1>
+
+      <!-- Link to allow users to log in -->
+      <a href="{% url 'login' %}">Log In</a>
+    {% endif %}
+  </header>
+
+  <!-- If the user is authenticated, show a form for them to add tasks -->
+  {% if request.user.is_authenticated %}
+    <div class="form">
+      <!-- Form for adding a new task -->
+      <form action="" method="post" id="my-form">
+        <!-- CSRF token for security against cross-site request forgery attacks -->
+        {% csrf_token %}
+        <!-- Input field to enter the task's name -->
+        <input type="text" name="list_name" placeholder="Add Task..." required>
+        <!-- Button to submit the form and add the task -->
+        <input style="cursor: pointer;" type="submit" value="ADD">
+      </form>
+      <!-- Display the number of tasks that the user hasn't completed yet -->
+      <p><strong>You Have <span>{{uncompleted_task_count}}</span> Uncomplete tasks</strong></p>
+      <!-- Loop through messages (such as notifications or errors) and display each one as an alert -->
+      {% for message in messages %}
+        <div class="alert">
+          <!-- Close button for the alert message -->
+          <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+          <!-- Display the actual message -->
+          {{message}}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+
+  <!--End Header-->
+{% block content %}
+
+{% endblock content %}
+
+
+<script>
+  // Get all elements with the class "tab-links" and "tab-contents"
+  var tablinks = document.getElementsByClassName("tab-links");
+  var tabcontents = document.getElementsByClassName("tab-contents");
+  
+  // Function to open a specific tab
+  function opentab(tabname){
+      // Remove the "active-link" class from all tab links
+      for (tablink of tablinks){
+          tablink.classList.remove("active-link");
+      }
+      
+      // Remove the "active-tab" class from all tab contents
+      for (tabcontent of tabcontents){
+          tabcontent.classList.remove("active-tab");
+      }
+      
+      // Add the "active-link" class to the clicked tab link
+      event.currentTarget.classList.add("active-link");
+      
+      // Add the "active-tab" class to the corresponding tab content
+      document.getElementById(tabname).classList.add("active-tab");
+  }
+  </script>
+  
+
+
+</body>
+</html>

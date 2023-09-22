@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block content %} 
+
+<!-- Start Tasks Section -->
+<section>
+  <!-- Tab titles for "All," "Active," and "Completed" tasks -->
+  <div class="tab-titles">
+    <!-- Clicking on these tab links triggers the JavaScript function "opentab" -->
+    <p class="tab-links active-link" data-tab="all" onclick="opentab('all')">All</p>
+    <p class="tab-links" data-tab="active" onclick="opentab('active')">Active</p>
+    <p class="tab-links" data-tab="completed" onclick="opentab('completed')">Completed</p>
+  </div>
+
+  <!-- Check if the user has any tasks -->
+  {% if request.user.lists.all %}
+    <!-- Tab content for "All" tasks -->
+    <div class="tab-contents active-tab" id="all">
+      {% for list in request.user.lists.all %}
+        {% if list.completed %}
+          <!-- Display completed tasks with options to unfinish or delete -->
+          <div class="row">
+            <div class="row-1">
+              <p>{{list.body}}</p>
+            </div>
+            <div class="row-2">
+              <a style="color: #ff6200" href="{% url 'unfinish' list.id %}">Unfinish</a>
+              <a href="{% url 'delete' list.id %}"><i class="fa-solid fa-trash-can"></i></a>
+            </div>
+          </div>
+        {% else %}
+          <!-- Display active tasks with options to finish or delete -->
+          <div class="row">
+            <div class="row-1">
+              <p>{{list.body}}</p>
+            </div>
+            <div class="row-2">
+              <a style="color:#00cc00;font-weight: bold;" href="{% url 'finish' list.id %}">Finish</a>
+              <a href="{% url 'delete' list.id %}"><i class="fa-solid fa-trash-can"></i></a>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <!-- Tab content for "Active" tasks -->
+    <div class="tab-contents" id="active">
+      {% for list in request.user.lists.all %}
+        {% if list.completed == False %}
+          <!-- Display active tasks with an option to delete -->
+          <div class="row">
+            <div class="row-1">
+              <p>{{list.body}}</p>
+            </div>
+            <div class="row-2">
+              <div class="link-1">
+                <a href="{% url 'delete' list.id %}"><i class="fa-solid fa-trash-can"></i></a>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <!-- Tab content for "Completed" tasks -->
+    <div class="tab-contents" id="completed">
+      {% for list in request.user.lists.all %}
+        {% if list.completed %}
+          <!-- Display completed tasks with an option to delete -->
+          <div class="row">
+            <div class="row-1">
+              <div class="para">
+                <p>{{list.body}}</p>
+              </div>
+            </div>
+            <div class="row-2">
+              <div class="link-1">
+                <a href="{% url 'delete' list.id %}"><i class="fa-solid fa-trash-can"></i></a>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% else %}
+    <!-- Display a message when the user has no tasks -->
+    <div class="empty" style="margin-top: 30px;color: #c14757;">
+      <h1>Your To Do List Is Empty</h1>
+    </div>
+  {% endif %}
+</section>
+<!-- End Tasks Section -->
+
+{% endblock content %}

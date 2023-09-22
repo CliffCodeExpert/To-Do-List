@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style2.css' %}">
+    <title>To Do List</title>
+</head>
+<body>
+    <div class="container-2">
+      <div class="container-1">
+            <h1 class="logo">Sign Up Below:</h1>
+            <hr>
+            {% for message in messages %}
+            <h5 style="color:red;font-weight: bold;">{{message}}</h5>
+            {% endfor %}
+            <br>
+              <form action="register" method="post">
+                {% csrf_token %}
+                <p>Enter Username:</p>
+                <input type="text" name="username" placeholder="Enter Username" required >
+                <p>Enter Email:</p>
+                <input type="email" name="email" placeholder="Enter email" required >
+                <p>Input Password:</p>
+                <input type="password" name="password" placeholder="Input Password" required ><br>
+                <p>Confirm Password:</p>
+                <input type="password" name="password2" placeholder="Confirm Password" required ><br>
+                <input type="submit" value="SIGN UP">
+              </form>
+              <div class="para">
+            <p>Already Have An Account.?<a href="{% url 'login' %}">Log In</a></p>
+            </div>
+           </div>
+    </div>
+</body>
+</html>
