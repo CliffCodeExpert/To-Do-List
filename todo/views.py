@@ -57,7 +57,7 @@ def register(request):
                 # If the email and username are both unique, create a new user.
                 user = User.objects.create_user(username=username, email=email, password=password)
 
-                # Fetch the created user (this step seems redundant since the 'user' object can be directly used).
+                # Fetch the created user
                 new_model = User.objects.get(username=username)
                 
                 # Create a profile for the newly registered user.
